@@ -2,7 +2,11 @@ package com.security.cruddto.controlador;
 
 
 
+import com.security.cruddto.dto.Entidad_Usuario.CrearUsuarioDTO;
+import com.security.cruddto.dto.Entidad_Usuario.UsuarioDTO;
+import com.security.cruddto.servicio.UsuarioServicio;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +14,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/usuario")
 public class UsuarioControlador {
+
+
+    private final UsuarioServicio servicio;
+
+    public UsuarioControlador(UsuarioServicio servicio){
+        this.servicio = servicio;
+    }
 
 //    private final ProductoServicio servicio;
 //
@@ -19,20 +30,15 @@ public class UsuarioControlador {
 //        this.servicio = servicio;
 //    }
 //
-//    @GetMapping("")
-//    public ResponseEntity<?> listarProductos() {
-//        List<Producto> productos = servicio.listar();
-//        return ResponseEntity.ok(productos);
-//    }
-//
-//    @PostMapping("/crear")
-//    public ResponseEntity<?> crearProducto(@Valid @RequestBody Producto producto) {
-//
-//        Producto productoNuevo = servicio.guardar(producto);
-//
-//        return ResponseEntity.ok(productoNuevo);
-//
-//    }
+    @GetMapping("")
+    public ResponseEntity<?> listarProductos() {
+                return ResponseEntity.ok(servicio.listarUsuarios());
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<?> crearUsuario(@Valid @RequestBody CrearUsuarioDTO crearUsuarioDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicio.crearUsuario(crearUsuarioDTO));
+    }
 //
 //    @GetMapping("/buscar/{id}")
 //    public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {

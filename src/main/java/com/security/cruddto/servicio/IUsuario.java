@@ -2,21 +2,25 @@ package com.security.cruddto.servicio;
 
 
 
+import com.security.cruddto.dto.Entidad_Usuario.ActualizarUsuarioDTO;
+
+import com.security.cruddto.dto.Entidad_Usuario.CrearUsuarioDTO;
+import com.security.cruddto.dto.Entidad_Usuario.UsuarioDTO;
 import com.security.cruddto.modelo.EntidadUsuario;
 
 import java.util.List;
 
 public interface IUsuario {
 
-    public List<EntidadUsuario> listarUsuario();
+    public List<UsuarioDTO> listarUsuarios();
 
     public void eliminarUsuarioPorEmail(String email);
 
-    public EntidadUsuario crearUsuario(EntidadUsuario usuario);
+    public CrearUsuarioDTO crearUsuario(CrearUsuarioDTO usuario);
 
-    public EntidadUsuario actualizarUsuarioPorEmail(String email, EntidadUsuario usuario);
+    public ActualizarUsuarioDTO actualizarUsuarioPorEmail(String email, ActualizarUsuarioDTO usuario);
 
-    public EntidadUsuario buscarUsuarioPorEmail(String email);
+    public UsuarioDTO buscarUsuarioPorEmail(String email);
 
 
 
