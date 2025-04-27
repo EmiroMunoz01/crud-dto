@@ -42,7 +42,6 @@ public class UsuarioControlador {
 //
 //    @GetMapping("/buscar/{id}")
 //    public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {
-//
 //        Optional<Producto> productoOpt = servicio.obtenerPorId(id);
 //
 //        if (productoOpt.isPresent()) {
