@@ -14,7 +14,7 @@ public interface IUsuario {
 
     public List<UsuarioDTO> listarUsuarios();
 
-    public void eliminarUsuarioPorEmail(String email);
+    public String eliminarUsuarioPorEmail(String email);
 
     public CrearUsuarioDTO crearUsuario(CrearUsuarioDTO usuario);
 

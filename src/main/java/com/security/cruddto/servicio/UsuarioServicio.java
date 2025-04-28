@@ -8,6 +8,7 @@ import com.security.cruddto.modelo.EntidadUsuario;
 import com.security.cruddto.modelo.Role;
 import com.security.cruddto.repositorio.UsuarioRepositorio;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class UsuarioServicio implements IUsuario {
     private final UsuarioRepositorio repositorio;
 
     public UsuarioServicio(UsuarioRepositorio repositorio) {
+
         this.repositorio = repositorio;
     }
 
@@ -34,7 +36,6 @@ public class UsuarioServicio implements IUsuario {
         return dto;
     }
 
-
     //Metodo para listar todos los usuarios
     @Override
     public List<UsuarioDTO> listarUsuarios() {
@@ -43,10 +44,10 @@ public class UsuarioServicio implements IUsuario {
                 .toList();
     }
 
-
     //Metodo para eliminar un usuario mediante email
+    @Transactional
     @Override
-    public void eliminarUsuarioPorEmail(String email) {
+    public String eliminarUsuarioPorEmail(String email) {
         // Validación básica del email
         if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("El email no puede ser nulo o vacío");
@@ -61,13 +62,16 @@ public class UsuarioServicio implements IUsuario {
             repositorio.deleteByEmail(email);
             // Opcional: Log de éxito
             log.info("Usuario con email {} eliminado correctamente", email);
+
         } catch (Exception ex) {
             // Log del error y relanzamiento controlado
             log.error("Error al eliminar usuario con email: " + email, ex);
             throw new RuntimeException("Error al eliminar el usuario", ex);
         }
-    }
 
+        return "Usuario Eliminado con exito";
+
+    }
 
     //Metodo para crear un usuario
     @Override
@@ -86,7 +90,6 @@ public class UsuarioServicio implements IUsuario {
 
         return usuarioDTO;
     }
-
 
     //Metodo para actualizar un usuario
     @Override
@@ -107,8 +110,10 @@ public class UsuarioServicio implements IUsuario {
 
         // Actualizar campos (solo si no son nulos en el DTO)
         if (usuario.getClave() != null) {
-            buscarEntidad.setClave(usuario.getClave()); // Considera hashear la contraseña
+            buscarEntidad.setClave(usuario.getClave());
         }
+
+
         if (usuario.getDireccion() != null) {
             buscarEntidad.setDireccion(usuario.getDireccion());
         }
@@ -124,11 +129,18 @@ public class UsuarioServicio implements IUsuario {
         return usuarioModificado;
     }
 
-
     //Metodo para eliminar un usuario
     @Override
     public UsuarioDTO buscarUsuarioPorEmail(String email) {
 
-        return null;
+        EntidadUsuario buscarUsuario = repositorio.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con email: " + email));
+
+        UsuarioDTO usuarioEncontrado = new UsuarioDTO();
+        usuarioEncontrado.setEmail(buscarUsuario.getEmail());
+        usuarioEncontrado.setDireccion(buscarUsuario.getDireccion());
+        usuarioEncontrado.setNombre(buscarUsuario.getNombre());
+
+        return usuarioEncontrado;
+
     }
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 public class CrearUsuarioDTO {
 
     @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(min = 6, message = "El nombre debe tener al menos 3 caracteres")
+    @Size(min = 4, message = "El nombre debe tener al menos 4 caracteres")
     private String nombre;
 
     @NotBlank(message = "La direccion no puede estar vacía")
